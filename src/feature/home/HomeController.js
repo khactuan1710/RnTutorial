@@ -2,13 +2,16 @@ import { homeApi } from "../../services/api/home/homeAPI"
 
 const HomeController = () => {
     const getInfoCustomer = async  () => {
-        console.log("hi");
         const res = await homeApi.getInfoCustomer()
-        console.log("hi2");
         return res
+    }
+    const getInfo = async () => {
+        const res = await homeApi.getInfo();
+        return res;
     }
     return {
         getInfoCustomer,
+        getInfo,
     }
 }
 export default HomeController

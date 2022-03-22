@@ -1,4 +1,5 @@
 import endpoints from "./endpoints";
+import { BASE_URL } from "../../../configs/Config";
 
 export const homeApi = {
     getInfoCustomer : async ()  => {
@@ -9,5 +10,16 @@ export const homeApi = {
                 console.log(err);
             })
             return  res
-        }
+    },
+
+    getInfo: async () => {
+        const res = await fetch(`${BASE_URL + endpoints.v1.getInfoEndpoint()}`)
+        .then((response) => {
+            return response.json()
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+        return res;
+    }
 }
