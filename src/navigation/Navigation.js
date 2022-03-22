@@ -6,7 +6,9 @@ import Home from "../feature/home/Home";
 const Navigation = () => {
     const Stack = createNativeStackNavigator();
     return(<NavigationContainer>
-        <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Navigator
+        //  screenOptions={{headerShown: false}}
+         >
             <Stack.Screen component={Login} name = "Login"/>
             <Stack.Screen component={Home} name = "Home"/>
         </Stack.Navigator>

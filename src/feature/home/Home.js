@@ -1,24 +1,44 @@
 import React from "react-native"
-import {useEffect, useState} from "react"
-import { View, Text } from "react-native"
+import { useEffect, useState } from "react"
+import { View, Text, FlatList, Image } from "react-native"
 import HomeController from "./HomeController"
-const Home =({route}) => {
-    const {getInfoCustomer} = HomeController()
+import Header from "../../common/base/Header"
+const Home = ({ route }) => {
+    const { getInfoCustomer, getInfo } = HomeController()
     const account = route.params
     const [res, setRes] = useState()
-    useEffect ( async() => {
-        console.log("test1");
-        // setRes(await getInfoCustomer())
-        const respo = await getInfoCustomer()
-        setRes(respo)
-        console.log(respo.description, "rp");
-        console.log(res.description);
-    },[])
-    return(<View style={{justifyContent: "center", alignItems: "center", flex: 1}}>
-        <Text>Home</Text>
-        <Text>username: {account.username}</Text>
-        <Text>password: {account.password}</Text>
-        <Text>{res.description + ""}</Text>
+    const [customerInfo, setCustomerInfo] = useState();
+
+    // useEffect ( async() => {
+    //     const respo = await getInfoCustomer()
+    //     setRes(respo)
+    // },[])
+
+    useEffect(async () => {
+        const res = await getInfo();
+        setCustomerInfo(res)
+    }, [])
+
+    return (<View style={{ justifyContent: "center", flex: 1 }}>
+        <Header title="Home" />
+        <FlatList
+            data={customerInfo}
+            renderItem={({ item }) => {
+                return (
+                    <View style={{ width: "100%", marginTop: 50, marginLeft: 20 }}>
+                        <Text>name: {item.name}</Text>
+                        <Text>age: {item.age}</Text>
+                        <Text>address: {item.address}</Text>
+                        <Image style={{ height: 100, width: 100 }} resizeMode="contain" source={{ uri: item.avatar }} />
+                    </View>
+                )
+            }}
+            ListEmptyComponent={() => {
+                return (<View style={{ alignSelf: "center" }}>
+                    <Text>Không có dữ liệu</Text>
+                </View>)
+            }}
+        />
     </View>)
 }
 
