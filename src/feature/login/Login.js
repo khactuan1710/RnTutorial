@@ -2,6 +2,7 @@ import React from "react-native"
 import { useState, useEffect } from 'react';
 import { View, Text , TouchableOpacity, TextInput} from "react-native"
 import styles from "./LoginStyle"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Login =({navigation}) => {
     const [account, setAccount] = useState();
     const [username, setUsername] = useState();
@@ -9,6 +10,7 @@ const Login =({navigation}) => {
     const [loginFailed, setLoginFailed] = useState()
 
     useEffect(() => {
+        
         fetch("https://60f4d20e2208920017f39df5.mockapi.io/account")
         .then((response) => {
             return response.json()
@@ -17,21 +19,32 @@ const Login =({navigation}) => {
         })
     }, [])
 
-    const logIn = () => {
+
+
+    const logIn =  () => {
         let isSuccess = false;
-        navigation.navigate('Home', {username: username, password: password})
-        // account.forEach((item) => {
-        //     if(item.username === username && item.password === password) {
-        //         navigation.navigate('Home', {username: username, password: password})
-        //         isSuccess = true;
-        //     }
-        // })
-        // if(!isSuccess) {
-        //     setLoginFailed("Thông tin tài khoản không đúng!")
-        // }else {
-        //     setLoginFailed("")
-        // }
+        account.forEach(async (item) => {
+            if(item.username === username && item.password === password) {
+                isSuccess = true;
+                await storeUser(item);
+                navigation.navigate('Home', {username: username, password: password})
+            }
+        })
+        if(!isSuccess) {
+            setLoginFailed("Thông tin tài khoản không đúng!")
+        }else {
+            setLoginFailed("")
+        }
     }
+
+    const storeUser = async (item) => {
+        try {
+        const jsonValue = JSON.stringify(item)
+          await AsyncStorage.setItem('user', jsonValue)
+        } catch (e) {
+            console.log(e);
+        }
+      }
 
     return(<View style={styles.container}>
         <View style={{flex: 1, justifyContent: "center"}}>

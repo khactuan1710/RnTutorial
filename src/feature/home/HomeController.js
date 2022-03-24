@@ -9,9 +9,17 @@ const HomeController = () => {
         const res = await homeApi.getInfo();
         return res;
     }
+    const goToConversation = (navigation) => {
+        navigation.navigate('Conversation')
+    }
+    const goToUserInfo = (navigation) => {
+        navigation.navigate('UserInfo')
+    }
     return {
         getInfoCustomer,
         getInfo,
+        goToConversation,
+        goToUserInfo,
     }
 }
 export default HomeController

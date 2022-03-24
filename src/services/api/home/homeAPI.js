@@ -3,7 +3,6 @@ import { BASE_URL } from "../../../configs/Config";
 
 export const homeApi = {
     getInfoCustomer : async ()  => {
-        console.log("hi3");
             const res = await fetch('https://reactnative.dev/movies.json')
             .then((res) => res.json())
             .catch ((err) => {
