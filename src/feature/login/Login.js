@@ -1,6 +1,6 @@
 import React from "react-native"
 import { useState, useEffect } from 'react';
-import { View, Text , TouchableOpacity, TextInput} from "react-native"
+import { View, Text , TouchableOpacity, TextInput, Image} from "react-native"
 import styles from "./LoginStyle"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const Login =({navigation}) => {
@@ -8,6 +8,7 @@ const Login =({navigation}) => {
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
     const [loginFailed, setLoginFailed] = useState()
+    const [isShowPass, setIsShowPass] = useState(false);
 
     useEffect(() => {
         
@@ -24,6 +25,7 @@ const Login =({navigation}) => {
     const logIn =  () => {
         let isSuccess = false;
         account.forEach(async (item) => {
+            console.log(item.username, "username");
             if(item.username === username && item.password === password) {
                 isSuccess = true;
                 await storeUser(item);
@@ -57,12 +59,22 @@ const Login =({navigation}) => {
                     setUsername(text)
                 }}
              />
-            <TextInput placeholder="password" style ={[styles.edLogin, {marginTop: 20}]}
-             onChangeText={(text) => {
-                setPassword(text)
-              }}
-              secureTextEntry={true}
-            />
+             <View style={{ height: 50, width: "80%",borderRadius: 10, paddingLeft: 10 , borderWidth: 1, marginTop: 20, alignSelf: "center", flexDirection: "row"}}>
+                <TextInput placeholder="password" style ={[ {flex: 1}]}
+                onChangeText={(text) => {
+                    setPassword(text)
+                }}
+                secureTextEntry={!isShowPass? true : false}
+                />
+                <TouchableOpacity style={{alignSelf: "center", marginRight: 10}}
+                    onPress={() => {
+                        setIsShowPass(!isShowPass)
+                    }}
+                >
+                    {isShowPass? <Image source={require('../../asset/images/eyeClose.png')} style={{width: 20, height: 20}}/>
+                    : <Image source={require('../../asset/images/eyeOpen.png')} style={{width: 20, height: 20}}/>}
+                </TouchableOpacity>
+             </View>
             <View style={{width: "80%", alignSelf: "center", marginTop: 10}}>
             <Text style={{color: "red"}}>{loginFailed}</Text>
             </View>
